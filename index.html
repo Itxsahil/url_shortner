@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>url_shortner</title>
+    <style>
+        .s{
+            display: flex;
+            justify-items: flex-start;
+        }
+    </style>
+</head>
+<body>
+    <div class="main" method="post" action="/create">
+        <input type="text" id="url" placeholder="Enter the URL...">
+        <button class="Enter" id="sd">Enter</button>
+        <br>
+        <div class="s">
+         New url : <div class="Short_url"></div>
+        </div>
+    </div>
+    <script>
+        const url_comp = document.getElementById('url')
+        const shortUrlDiv = document.querySelector('.Short_url')
+        
+
+        const btn = document.getElementById('sd');
+        btn.addEventListener('click', function() {
+            let url = url_comp.value;
+            url_comp.value=""
+            fetch('http://localhost:3000/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: url })
+            }).then(res => {
+                console.log(res.status)
+                return res.json();
+            }).then(data => {
+                const a=document.createElement('a')
+                a.href=data;
+                a.innerHTML=data;
+                shortUrlDiv.appendChild(a)
+            }).catch(err => {
+                console.error('Error:', err);
+            });
+        })
+    </script>
+</body>
+</html>
