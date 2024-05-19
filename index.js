@@ -51,7 +51,7 @@ app.post('/create',async(req, res)=>{
 
 app.get('/:id',async(req, res )=>{
     const id = req.params.id
-    const url = await newuri.findOne({shorturl : "http://localhost:"+ PORT + "/" + id})
+    const url = await newuri.findOne({shorturl : "http://localhost:"+ process.env.PORT + "/" + id})
     res.redirect(url.mainurl)
 })
 
