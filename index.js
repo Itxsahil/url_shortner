@@ -1,7 +1,8 @@
+import 'dotenv/config'
 const express = require('express')
 const path = require('path');
 const app = express()
-const PORT = 3000
+
 
 
 const mongoose = require('mongoose')
@@ -54,4 +55,4 @@ app.get('/:id',async(req, res )=>{
     res.redirect(url.mainurl)
 })
 
-app.listen(3000, ()=> console.log("Server is livr ....."))
+app.listen(process.env.PORT, ()=> console.log(`Server is livr on port ${PORT} .....`))
