@@ -1,18 +1,21 @@
-// index.js
-
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
-const cors = require('cors');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
-app.use(cors());
 
-mongoose.connect(process.env.MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('Could not connect to MongoDB', err));
+mongoose.connect(process.env.MONGO_DB_URI, {
+    // These options are deprecated in the latest versions of MongoDB Node.js driver
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('Could not connect to MongoDB', err));
 
+app.use(cors()); // Enable CORS for all routes
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("static"));
@@ -47,7 +50,7 @@ app.post('/create', async (req, res) => {
             shorturl: `http://localhost:${PORT}/${shortUrlId}`
         });
         const savedShortUrl = await ShortUrl.save();
-        // console.log(savedShortUrl);
+        console.log(savedShortUrl);
         res.json(savedShortUrl.shorturl);
     } catch (error) {
         console.error('Error creating short URL:', error);
@@ -71,4 +74,6 @@ app.get('/:id', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => console.log(`Server is live on port ${PORT}...`));
+app.listen(PORT, () => {
+  console.log(`Server is live on port ${PORT}...`);
+});
