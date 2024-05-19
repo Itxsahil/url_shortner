@@ -1,10 +1,12 @@
+// index.js
+
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Define PORT here
+const PORT = process.env.PORT || 3000;
 
 mongoose.connect(process.env.MONGO_DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))
@@ -44,7 +46,7 @@ app.post('/create', async (req, res) => {
             shorturl: `http://localhost:${PORT}/${shortUrlId}`
         });
         const savedShortUrl = await ShortUrl.save();
-        console.log(savedShortUrl);
+        // console.log(savedShortUrl);
         res.json(savedShortUrl.shorturl);
     } catch (error) {
         console.error('Error creating short URL:', error);

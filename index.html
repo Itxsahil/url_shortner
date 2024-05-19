@@ -3,50 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>url_shortner</title>
+    <title>URL Shortener</title>
     <style>
-        .s{
+        .s {
             display: flex;
-            justify-items: flex-start;
+            justify-content: flex-start;
         }
     </style>
 </head>
 <body>
-    <div class="main" method="post" action="/create">
+    <div class="main">
         <input type="text" id="url" placeholder="Enter the URL...">
         <button class="Enter" id="sd">Enter</button>
         <br>
         <div class="s">
-         New url : <div class="Short_url"></div>
+            New URL: <div class="Short_url"></div>
         </div>
     </div>
     <script>
-        const url_comp = document.getElementById('url')
-        const shortUrlDiv = document.querySelector('.Short_url')
-        
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlInput = document.getElementById('url');
+            const shortUrlDiv = document.querySelector('.Short_url');
+            const btn = document.getElementById('sd');
 
-        const btn = document.getElementById('sd');
-        btn.addEventListener('click', function() {
-            let url = url_comp.value;
-            url_comp.value=""
-            fetch('http://localhost:3000/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ url: url })
-            }).then(res => {
-                console.log(res.status)
-                return res.json();
-            }).then(data => {
-                const a=document.createElement('a')
-                a.href=data;
-                a.innerHTML=data;
-                shortUrlDiv.appendChild(a)
-            }).catch(err => {
-                console.error('Error:', err);
+            btn.addEventListener('click', async function () {
+                let url = urlInput.value.trim();
+                if (!url) {
+                    alert("Please enter a URL.");
+                    return;
+                }
+                urlInput.value = "";
+                try {
+                    const response = await fetch('http://localhost:3000/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ url: url })
+                    });
+                    if (!response.ok) {
+                        throw new Error('Failed to shorten URL');
+                    }
+                    const data = await response.json();
+                    shortUrlDiv.innerHTML = ''; // Clear previous short URL
+                    const a = document.createElement('a');
+                    a.href = data;
+                    a.textContent = data;
+                    shortUrlDiv.appendChild(a);
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while shortening the URL. Please try again.');
+                }
             });
-        })
+        });
     </script>
 </body>
 </html>
