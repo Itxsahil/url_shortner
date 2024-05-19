@@ -7,7 +7,7 @@ const app = express()
 
 const mongoose = require('mongoose')
 
-mongoose.connect("mongodb://127.0.0.1:27017/newdb")
+mongoose.connect(`${process.env.MONGO_DB_URI}newdb`)
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
