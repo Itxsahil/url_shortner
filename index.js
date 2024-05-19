@@ -55,4 +55,4 @@ app.get('/:id',async(req, res )=>{
     res.redirect(url.mainurl)
 })
 
-app.listen(process.env.PORT, ()=> console.log(`Server is livr on port ${PORT} .....`))
+app.listen(process.env.PORT, ()=> console.log(`Server is livr on port ${process.env.PORT} .....`))
