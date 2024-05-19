@@ -5,19 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Shortener</title>
     <style>
-        .s {
+        body {
+            font-family: Arial, sans-serif;
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: #fff;
+            padding: 2em;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        .container input {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .container button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background-color: #0056b3;
+        }
+        .container .result {
+            margin-top: 20px;
+        }
+        .container .result a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .container .result a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="main">
+    <div class="container">
+        <h1>URL Shortener</h1>
         <input type="text" id="url" placeholder="Enter the URL...">
-        <button class="Enter" id="sd">Enter</button>
-        <br>
-        <div class="s">
-            New URL: <div class="Short_url"></div>
+        <button class="Enter" id="sd">Shorten URL</button>
+        <div class="result">
+            <span>New URL: </span><div class="Short_url"></div>
         </div>
     </div>
     <script>

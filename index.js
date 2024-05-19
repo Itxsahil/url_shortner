@@ -7,26 +7,27 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_DB_URI, {
-    // These options are deprecated in the latest versions of MongoDB Node.js driver
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true
+    // Use updated connection options
 })
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Could not connect to MongoDB', err));
 
+// Middleware
 app.use(cors()); // Enable CORS for all routes
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("static"));
 
+// Schema and Model
 const urlSchema = new mongoose.Schema({
     mainurl: String,
     shorturl: String
 });
-
 const newuri = mongoose.model("newuri", urlSchema);
 
+// Helper function to generate random strings
 function generateString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
@@ -37,6 +38,7 @@ function generateString(length) {
     return result;
 }
 
+// Routes
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -45,9 +47,10 @@ app.post('/create', async (req, res) => {
     try {
         const url = req.body.url;
         const shortUrlId = generateString(5);
+        const shortUrl = `${req.protocol}://${req.get('host')}/${shortUrlId}`;
         const ShortUrl = new newuri({
             mainurl: url,
-            shorturl: `http://localhost:${PORT}/${shortUrlId}`
+            shorturl: shortUrl
         });
         const savedShortUrl = await ShortUrl.save();
         console.log(savedShortUrl);
@@ -61,7 +64,7 @@ app.post('/create', async (req, res) => {
 app.get('/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const shortUrl = `http://localhost:${PORT}/${id}`;
+        const shortUrl = `${req.protocol}://${req.get('host')}/${id}`;
         const url = await newuri.findOne({ shorturl: shortUrl });
         if (url) {
             res.redirect(url.mainurl);
@@ -74,6 +77,7 @@ app.get('/:id', async (req, res) => {
     }
 });
 
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server is live on port ${PORT}...`);
+    console.log(`Server is live on port ${PORT}...`);
 });
