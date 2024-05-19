@@ -1,6 +1,7 @@
 {
 "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "echo 'Build script not defined'"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
